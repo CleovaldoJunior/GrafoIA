@@ -3,8 +3,8 @@ import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.util.mxCellRenderer;
 import org.jgrapht.Graph;
 import org.jgrapht.ext.JGraphXAdapter;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.generate.CompleteBipartiteGraphGenerator;
+import org.jgrapht.graph.*;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.DepthFirstIterator;
 import org.jgrapht.traverse.GraphIterator;
@@ -28,18 +28,26 @@ class Grafo{
     }
 
     public static Graph<Integer, DefaultEdge> criaGrafoRegular() {
-        return new SimpleDirectedGraph<>(DefaultEdge.class);
+        return new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
     }
 
-    public static void buscaProfundidade(Graph<Integer, DefaultEdge> grafo){
-        GraphIterator<Integer, DefaultEdge> iterator = new DepthFirstIterator<>(grafo);
+    public static Graph<Integer, DefaultEdge> criaMultiGrafo(){
+        return new Multigraph<Integer, DefaultEdge>(DefaultEdge.class);
+    }
+
+    public static Graph<Integer, DefaultEdge> criaGrafoValorado(){
+        return new SimpleWeightedGraph<Integer, DefaultEdge>(DefaultEdge.class);
+    }
+
+    public static void buscaProfundidade(Graph<Integer, DefaultEdge> grafo,Integer verInicial){
+        GraphIterator<Integer, DefaultEdge> iterator = new DepthFirstIterator<>(grafo,verInicial);
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
     }
 
-    public static void buscaLargura(Graph<Integer, DefaultEdge> grafo){
-        GraphIterator<Integer, DefaultEdge> it = new BreadthFirstIterator<>(grafo);
+    public static void buscaLargura(Graph<Integer, DefaultEdge> grafo, Integer verInicial){
+        GraphIterator<Integer, DefaultEdge> it = new BreadthFirstIterator<>(grafo,verInicial);
         while (it.hasNext()) {
             System.out.println(it.next());
         }

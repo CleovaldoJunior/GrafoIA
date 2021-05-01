@@ -2,95 +2,131 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.SQLOutput;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Set;
 
-public class Main {
-    public static void menu(int escolha){
-        if(escolha == 0){
-            System.out.println("1 -> Grafo Regular" +
-                    "\n2 -> Árvore" +
-                    "\n3 -> Grafo Completo" +
-                    "\n4 -> Multigrafo" +
-                    "\n5 -> Grafo Bipratido" +
-                    "\n6 -> Grafo Rotulado" +
-                    "\n7 -> Grafo Valorado" +
-                    "\n0 -> Sair\n");
-        }
-        else if(escolha == 1){
-            System.out.println();
-            System.out.println("1 -> Adicionar Vertice" +
-                    "\n2 -> Remover Vertice" +
-                    "\n3 -> Adicionar Aresta" +
-                    "\n4 -> Remover Aresta" +
-                    "\n5 -> Mostra Vertices"+
-                    "\n6 -> Mostra Arestas"+
-                    "\n7 -> Mostrar Grafo"+
-                    "\n0 -> Sair\n");
-        }
+class Main extends Canvas implements ActionListener {
+    private static JButton gSimples;
+    private static JButton gMulti;
+    private static JButton gValorado;
+    private static JFrame frameInicio;
+    private static JFrame frameGrafo;
+    private static Graph<Integer, DefaultEdge> g;
+    private static JButton mostraGrafo;
 
+    private static JLabel quantidadeVertices;
+    private static JButton addVertice;
+    private static JTextField verticeInput;
+
+    private static JLabel quantidadeAresta;
+    private static JButton addAresta;
+    private static JTextField arestaInput1;
+    private static JTextField arestaInput2;
+
+    public void janela() {
+        frameInicio = new JFrame("Grafo Generator");
+        frameInicio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameInicio.setSize(1000, 200);
+
+        frameGrafo = new JFrame("Grafo");
+        frameGrafo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameGrafo.setSize(1000, 200);
+
+        JPanel panelInicio = new JPanel();
+        JPanel panelGrafo = new JPanel();
+
+        gSimples = new JButton("Criar Grafo Simples");
+        gMulti = new JButton("Criar MultiGrafo");
+        gValorado = new JButton("Criar Grafo Valorado");
+
+        mostraGrafo = new JButton("Mostra Grafo");
+
+        gSimples.addActionListener(this);
+        gMulti.addActionListener(this);
+        gValorado.addActionListener(this);
+        mostraGrafo.addActionListener(this);
+
+        verticeInput = new JTextField(10);
+        addVertice = new JButton("Adicionar Vertice");
+        quantidadeVertices = new JLabel("");
+        addVertice.addActionListener(this);
+
+        arestaInput1 = new JTextField(5);
+        arestaInput2 = new JTextField(5);
+        addAresta = new JButton("Adicionar Aresta");
+        quantidadeAresta = new JLabel("");
+        addAresta.addActionListener(this);
+
+
+        panelInicio.add(gSimples);
+        panelInicio.add(gMulti);
+        panelInicio.add(gValorado);
+
+        panelGrafo.add(verticeInput);
+        panelGrafo.add(addVertice);
+        panelGrafo.add(quantidadeVertices);
+
+        panelGrafo.add(arestaInput1);
+        panelGrafo.add(arestaInput2);
+        panelGrafo.add(addAresta);
+        panelGrafo.add(quantidadeAresta);
+
+        panelGrafo.add(mostraGrafo);
+
+        frameInicio.getContentPane().add(BorderLayout.NORTH, panelInicio);
+        frameGrafo.getContentPane().add(BorderLayout.NORTH, panelGrafo);
+        frameGrafo.setVisible(false);
+        frameInicio.setVisible(true);
     }
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        Graph<Integer, DefaultEdge> g = null;
-        System.out.println("Digite qual tipo de grafo você deseja criar:\n");
-        menu(0);
-        int input = sc.nextInt();
-        while(input != 0) {
-            if (input == 1) {
-                g = Grafo.criaGrafoRegular();
-                System.out.println("\n[Grafo regular criado]");
-            }
-            if(g != null){
-                input = -1;
-                while(input != 0){
-                    if(input == 1){
-                        System.out.println("\n[Digite o vertice a ser adicionado]");
-                        int vertice = sc.nextInt();
-                        Grafo.addVertice(g, vertice);
-                    }else if(input == 2){
-                        System.out.println("\n[Digite o vertice a ser removido]");
-                        int vertice = sc.nextInt();
-                        Grafo.removeVertice(g, vertice);
-                    }else if(input == 3){
-                        System.out.println("\n[Digite o primeiro vertice da aresta]");
-                        int vertice1 = sc.nextInt();
-                        System.out.println("\n[Digite o segundo vertice da aresta]");
-                        int vertice2 = sc.nextInt();
-                        Grafo.addAresta(g, vertice1, vertice2);
-                    }else if(input == 4){
-                        System.out.println("\n[Digite o primeiro vertice]");
-                        int vertice1 = sc.nextInt();
-                        System.out.println("\n[Digite o segundo vertice]");
-                        int vertice2 = sc.nextInt();
-                        Grafo.removerAresta(g, vertice1, vertice2);
-                    }else if (input == 5){
-                        System.out.println(Grafo.quantidadeVertices(g));
-                    }else if (input == 6){
-                        System.out.println(Grafo.quantidadeArestas(g));
-                    }else if (input == 7){
-                        Grafo.mostraGrafo(g);
-                    }else if (input == 8){
-                        System.out.println("[Grafo apagado com sucesso]");
-                        g = null;
-                        break;
-                    }
-                    menu(1);
-                    input = sc.nextInt();
-                }
-                g = null;
-                menu(0);
-            }
-            else{
-                menu(0);
-            }
 
-            input = sc.nextInt();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == gSimples){
+            g = Grafo.criaGrafoRegular();
+            frameInicio.setVisible(false);
+            frameGrafo.setVisible(true);
+        }else if(e.getSource() == gMulti){
+            g = Grafo.criaMultiGrafo();
+            frameInicio.setVisible(false);
+            frameGrafo.setVisible(true);
+        }else if(e.getSource() == gValorado){
+            g = Grafo.criaGrafoValorado();
+            frameInicio.setVisible(false);
+            frameGrafo.setVisible(true);
+        }else if(e.getSource() == addVertice){
+            String vertInput = verticeInput.getText();
+            Grafo.addVertice(g, Integer.parseInt(vertInput));
+            Set<Integer> qVer = Grafo.quantidadeVertices(g);
+            quantidadeVertices.setText(qVer.toString());
+        }else if(e.getSource() == addAresta){
+            String areInput1 = arestaInput1.getText();
+            String areInput2 = arestaInput2.getText();
+            Grafo.addAresta(g, Integer.parseInt(areInput1), Integer.parseInt(areInput2));
+            Set<DefaultEdge> qAre = Grafo.quantidadeArestas(g);
+            quantidadeAresta.setText(qAre.toString());
+            Grafo.buscaLargura(g, Integer.parseInt(areInput1));
+            System.out.println();
+            //Grafo.buscaProfundidade(g, Integer.parseInt(areInput1));
+        }else if(e.getSource() == mostraGrafo){
+            try {
+                Grafo.mostraGrafo(g);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            MyCanvas m=new MyCanvas();
+            JFrame f=new JFrame();
+            f.add(m);
+            f.setSize(400,400);
+            f.setVisible(true);
         }
+    }
+
+    public static void main(String[] args) {
+        Main gui = new Main();
+        gui.janela();
     }
 }
-
