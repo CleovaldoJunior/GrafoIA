@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 class Grafo{
-    public static void mostraGrafo(Graph<Integer, DefaultEdge> grafo) throws IOException {
-        JGraphXAdapter<Integer, DefaultEdge> graphAdapter = new JGraphXAdapter<Integer, DefaultEdge>(grafo);
+    public static void mostraGrafo(Graph<String, DefaultEdge> grafo) throws IOException {
+        JGraphXAdapter<String, DefaultEdge> graphAdapter = new JGraphXAdapter<String, DefaultEdge>(grafo);
         mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
         layout.execute(graphAdapter.getDefaultParent());
 
@@ -27,8 +27,8 @@ class Grafo{
         ImageIO.write(image, "PNG", imgFile);
     }
 
-    public static void mostraGrafoValorado(Graph<Integer, String> grafo) throws IOException {
-        JGraphXAdapter<Integer, String> graphAdapter = new JGraphXAdapter<Integer, String>(grafo);
+    public static void mostraGrafoValorado(Graph<String, String> grafo) throws IOException {
+        JGraphXAdapter<String, String> graphAdapter = new JGraphXAdapter<String, String>(grafo);
         mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
         layout.execute(graphAdapter.getDefaultParent());
 
@@ -37,101 +37,101 @@ class Grafo{
         ImageIO.write(image, "PNG", imgFile);
     }
 
-    public static Graph<Integer, DefaultEdge> criaGrafoRegular() {
-        return new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+    public static Graph<String, DefaultEdge> criaGrafoRegular() {
+        return new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
     }
 
-    public static Graph<Integer, DefaultEdge> criaMultiGrafo(){
-        return new Multigraph<Integer, DefaultEdge>(DefaultEdge.class);
+    public static Graph<String, DefaultEdge> criaMultiGrafo(){
+        return new Multigraph<String, DefaultEdge>(DefaultEdge.class);
     }
 
-    public static Graph<Integer, String > criaGrafoValorado(){
-        return new SimpleWeightedGraph<Integer, String>(String.class);
+    public static Graph<String, String > criaGrafoValorado(){
+        return new SimpleWeightedGraph<String, String>(String.class);
     }
 
-    public static ArrayList<Integer> buscaProfundidade(Graph<Integer, DefaultEdge> grafo, int verInicial){
-        GraphIterator<Integer, DefaultEdge> iterator = new DepthFirstIterator<>(grafo,verInicial);
-        ArrayList<Integer> path = new ArrayList<>();
+    public static ArrayList<String> buscaProfundidade(Graph<String, DefaultEdge> grafo, String verInicial){
+        GraphIterator<String, DefaultEdge> iterator = new DepthFirstIterator<>(grafo,verInicial);
+        ArrayList<String> path = new ArrayList<>();
         while (iterator.hasNext()) {
             path.add(iterator.next());
         }
         return path;
     }
 
-    public static ArrayList<Integer> buscaLargura(Graph<Integer, DefaultEdge> grafo, int verInicial){
-        GraphIterator<Integer, DefaultEdge> it = new BreadthFirstIterator<>(grafo,verInicial);
-        ArrayList<Integer> path = new ArrayList<>();
+    public static ArrayList<String> buscaLargura(Graph<String, DefaultEdge> grafo, String verInicial){
+        GraphIterator<String, DefaultEdge> it = new BreadthFirstIterator<>(grafo,verInicial);
+        ArrayList<String> path = new ArrayList<>();
         while (it.hasNext()) {
             path.add(it.next());
         }
         return path;
     }
 
-    public static ArrayList<Integer> buscaProfundidadeValorado(Graph<Integer, String> grafo, int verInicial){
-        GraphIterator<Integer, String> iterator = new DepthFirstIterator<>(grafo,verInicial);
-        ArrayList<Integer> path = new ArrayList<>();
+    public static ArrayList<String> buscaProfundidadeValorado(Graph<String, String> grafo, String verInicial){
+        GraphIterator<String, String> iterator = new DepthFirstIterator<>(grafo,verInicial);
+        ArrayList<String> path = new ArrayList<>();
         while (iterator.hasNext()) {
             path.add(iterator.next());
         }
         return path;
     }
 
-    public static ArrayList<Integer> buscaLarguraValorado(Graph<Integer, String> grafo, int verInicial){
-        GraphIterator<Integer, String> it = new BreadthFirstIterator<>(grafo,verInicial);
-        ArrayList<Integer> path = new ArrayList<>();
+    public static ArrayList<String> buscaLarguraValorado(Graph<String, String> grafo, String verInicial){
+        GraphIterator<String, String> it = new BreadthFirstIterator<>(grafo,verInicial);
+        ArrayList<String> path = new ArrayList<>();
         while (it.hasNext()) {
             path.add(it.next());
         }
         return path;
     }
 
-    public static void addVertice(Graph<Integer, DefaultEdge> grafo, int vertice){
+    public static void addVertice(Graph<String, DefaultEdge> grafo, String vertice){
         grafo.addVertex(vertice);
     }
 
-    public static void addVerticeValorado(Graph<Integer, String> grafo, int vertice){
+    public static void addVerticeValorado(Graph<String, String> grafo, String vertice){
         grafo.addVertex(vertice);
     }
 
 
-    public static void addAresta(Graph<Integer, DefaultEdge> grafo, int a1, int a2){
+    public static void addAresta(Graph<String, DefaultEdge> grafo, String a1, String a2){
         grafo.addEdge(a1,a2);
 
     }
 
-    public static void addArestaValorada(Graph<Integer, String> grafo, int a1, int a2, String v){
+    public static void addArestaValorada(Graph<String, String> grafo, String a1, String a2, String v){
         grafo.addEdge(a1,a2,v);
     }
 
-    public static void removerAresta(Graph<Integer, DefaultEdge> grafo, int a1, Integer a2){
+    public static void removerAresta(Graph<String, DefaultEdge> grafo, String a1, String a2){
         grafo.removeEdge(a1, a2);
     }
 
-    public static void removeVertice(Graph<Integer, DefaultEdge> grafo, int vertice){
+    public static void removeVertice(Graph<String, DefaultEdge> grafo, String vertice){
         grafo.removeVertex(vertice);
     }
 
-    public static void removerArestaValor(Graph<Integer, String> grafo, String valor){
+    public static void removerArestaValor(Graph<String, String> grafo, String valor){
         grafo.removeEdge(valor);
     }
 
-    public static void removeVerticeValor(Graph<Integer, String> grafo, int vertice){
+    public static void removeVerticeValor(Graph<String, String> grafo, String vertice){
         grafo.removeVertex(vertice);
     }
 
-    public static Set<Integer> quantidadeVertices(Graph<Integer, DefaultEdge> grafo){
+    public static Set<String> quantidadeVertices(Graph<String, DefaultEdge> grafo){
         return grafo.vertexSet();
     }
 
-    public static Set<DefaultEdge> quantidadeArestas(Graph<Integer, DefaultEdge> grafo){
+    public static Set<DefaultEdge> quantidadeArestas(Graph<String, DefaultEdge> grafo){
         return grafo.edgeSet();
     }
 
-    public static Set<Integer> quantidadeVerticesValorado(Graph<Integer, String> grafo){
+    public static Set<String> quantidadeVerticesValorado(Graph<String, String> grafo){
         return grafo.vertexSet();
     }
 
-    public static Set<String> quantidadeArestasValorado(Graph<Integer, String> grafo){
+    public static Set<String> quantidadeArestasValorado(Graph<String, String> grafo){
         return grafo.edgeSet();
     }
 }
