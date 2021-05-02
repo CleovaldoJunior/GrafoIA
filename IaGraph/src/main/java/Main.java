@@ -1,6 +1,5 @@
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,75 +9,161 @@ import java.util.ArrayList;
 import java.util.Set;
 
 class Main extends Canvas implements ActionListener {
-    private static JButton gSimples;
-    private static JButton gMulti;
+    private static JPanel panelInicio;
+    private static JPanel panelGrafoVertice;
+    private static JPanel panelGrafoAresta;
+    private static JPanel panelGrafoMix;
+    private static JPanel panelGrafo;
+
+    private static JButton gSimples = null;
+    private static JButton gMulti = null;
     private static JButton gValorado;
     private static JFrame frameInicio;
     private static JFrame frameGrafo;
     private static Graph<Integer, DefaultEdge> g;
+    private static Graph<Integer, String> gValor;
     private static JButton mostraGrafo;
 
-    private static JLabel quantidadeVertices;
+    private static JLabel displayVertices;
     private static JButton addVertice;
+    private static JButton removeVertice;
+    private static JTextField verticeInputRemove;
     private static JTextField verticeInput;
+    private static JButton bQuantidadeVertice;
 
-    private static JLabel quantidadeAresta;
+    private static JLabel displayAresta;
     private static JButton addAresta;
+    private static JButton removeAresta;
+    private static JTextField arestaValorInputRemove;
+    private static JTextField arestaInput1Remove;
+    private static JTextField arestaInput2Remove;
     private static JTextField arestaInput1;
     private static JTextField arestaInput2;
+    private static JTextField arestaValorInput;
+    private static JButton bQuantidadeAresta;
+    private static JButton voltar;
+    private static JButton buscaLargura;
+    private static JButton buscaProfundidade;
+    private static JTextField buscaLarguraInput;
+    private static JTextField buscaProfundidadeInput;
+
+    private static JLabel displayMix;
+
+    public static void add_aresta_panel(int v){
+        if(v == 0){
+            panelGrafoAresta.add(arestaValorInputRemove);
+            panelGrafoAresta.add(arestaValorInput);
+            panelGrafoAresta.add(addAresta);
+            panelGrafoAresta.add(arestaInput1);
+            panelGrafoAresta.add(arestaInput2);
+            panelGrafoAresta.add(removeAresta);
+            panelGrafoAresta.add(arestaInput1Remove);
+            panelGrafoAresta.add(arestaInput2Remove);
+            panelGrafoAresta.add(displayAresta);
+            panelGrafoAresta.remove(arestaValorInputRemove);
+            panelGrafoAresta.remove(arestaValorInput);
+        }else if(v==1){
+            panelGrafoAresta.add(arestaInput1Remove);
+            panelGrafoAresta.add(arestaInput2Remove);
+            panelGrafoAresta.add(addAresta);
+            panelGrafoAresta.add(arestaInput1);
+            panelGrafoAresta.add(arestaInput2);
+            panelGrafoAresta.add(arestaValorInput);
+            panelGrafoAresta.add(removeAresta);
+            panelGrafoAresta.add(arestaValorInputRemove);
+            panelGrafoAresta.add(displayAresta);
+            panelGrafoAresta.remove(arestaInput1Remove);
+            panelGrafoAresta.remove(arestaInput2Remove);
+        }
+    }
 
     public void janela() {
         frameInicio = new JFrame("Grafo Generator");
         frameInicio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frameInicio.setSize(1000, 200);
+        frameInicio.setSize(600, 200);
 
         frameGrafo = new JFrame("Grafo");
         frameGrafo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frameGrafo.setSize(1000, 200);
+        frameGrafo.setSize(600, 200);
 
-        JPanel panelInicio = new JPanel();
-        JPanel panelGrafo = new JPanel();
+        panelInicio = new JPanel();
+        panelGrafoVertice = new JPanel(new GridLayout(9, 0,0,0));
+        panelGrafoAresta = new JPanel(new GridLayout(9, 0,0,0));
+        panelGrafoMix = new JPanel(new GridLayout(9, 0,0,0));
+        panelGrafo = new JPanel(new GridLayout(1, 0,2,1));
 
         gSimples = new JButton("Criar Grafo Simples");
         gMulti = new JButton("Criar MultiGrafo");
         gValorado = new JButton("Criar Grafo Valorado");
 
-        mostraGrafo = new JButton("Mostra Grafo");
-
         gSimples.addActionListener(this);
         gMulti.addActionListener(this);
         gValorado.addActionListener(this);
-        mostraGrafo.addActionListener(this);
 
-        verticeInput = new JTextField(10);
+        verticeInput = new JTextField("vInp");
+        verticeInputRemove = new JTextField("VReInp");
         addVertice = new JButton("Adicionar Vertice");
-        quantidadeVertices = new JLabel("");
+        removeVertice = new JButton("Remover vertice");
+        displayVertices = new JLabel("DVer");
         addVertice.addActionListener(this);
+        removeVertice.addActionListener(this);
 
-        arestaInput1 = new JTextField(5);
-        arestaInput2 = new JTextField(5);
+        arestaInput1 = new JTextField("A1I");
+        arestaInput2 = new JTextField("A2I");
+        arestaValorInput = new JTextField("VI");
+        arestaInput1Remove = new JTextField("A1R");
+        arestaInput2Remove = new JTextField("A2R");
+        arestaValorInputRemove = new JTextField("VR");
         addAresta = new JButton("Adicionar Aresta");
-        quantidadeAresta = new JLabel("");
+        removeAresta = new JButton("Remover Aresta");
+        displayAresta = new JLabel("DAre");
         addAresta.addActionListener(this);
+        removeAresta.addActionListener(this);
+
+        displayMix = new JLabel("DMix");
+        mostraGrafo = new JButton("Mostra Grafo");
+        bQuantidadeAresta = new JButton("Mostrar Arestas");
+        bQuantidadeVertice = new JButton("Mostrar Vertices");
+        voltar = new JButton("Voltar");
+        buscaLargura = new JButton("Busca em Largura");
+        buscaProfundidade = new JButton("Busca em Profundidade");
+        buscaProfundidadeInput = new JTextField();
+        buscaLarguraInput = new JTextField();
+        buscaProfundidade.addActionListener(this);
+        buscaLargura.addActionListener(this);
+        mostraGrafo.addActionListener(this);
+        bQuantidadeVertice.addActionListener(this);
+        bQuantidadeAresta.addActionListener(this);
+        voltar.addActionListener(this);
+
+        panelGrafoMix.add(mostraGrafo);
+        panelGrafoMix.add(bQuantidadeAresta);
+        panelGrafoMix.add(bQuantidadeVertice);
+        panelGrafoMix.add(buscaProfundidade);
+        panelGrafoMix.add(buscaProfundidadeInput);
+        panelGrafoMix.add(buscaLargura);
+        panelGrafoMix.add(buscaLarguraInput);
+        panelGrafoMix.add(voltar);
+        panelGrafoMix.add(displayMix);
 
 
         panelInicio.add(gSimples);
         panelInicio.add(gMulti);
         panelInicio.add(gValorado);
 
-        panelGrafo.add(verticeInput);
-        panelGrafo.add(addVertice);
-        panelGrafo.add(quantidadeVertices);
+        panelGrafoVertice.add(addVertice);
+        panelGrafoVertice.add(verticeInput);
+        panelGrafoVertice.add(removeVertice);
+        panelGrafoVertice.add(verticeInputRemove);
+        panelGrafoVertice.add(displayVertices);
 
-        panelGrafo.add(arestaInput1);
-        panelGrafo.add(arestaInput2);
-        panelGrafo.add(addAresta);
-        panelGrafo.add(quantidadeAresta);
+        panelGrafo.add(panelGrafoVertice);
+        panelGrafo.add(panelGrafoAresta);
+        panelGrafo.add(panelGrafoMix);
 
-        panelGrafo.add(mostraGrafo);
+        frameInicio.getContentPane().add(panelInicio, SwingConstants.CENTER);
+        frameGrafo.getContentPane().add(panelGrafo, SwingConstants.CENTER);
 
-        frameInicio.getContentPane().add(BorderLayout.NORTH, panelInicio);
-        frameGrafo.getContentPane().add(BorderLayout.NORTH, panelGrafo);
         frameGrafo.setVisible(false);
         frameInicio.setVisible(true);
     }
@@ -86,42 +171,184 @@ class Main extends Canvas implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == gSimples){
+            add_aresta_panel(0);
             g = Grafo.criaGrafoRegular();
             frameInicio.setVisible(false);
             frameGrafo.setVisible(true);
         }else if(e.getSource() == gMulti){
+            add_aresta_panel(0);
             g = Grafo.criaMultiGrafo();
             frameInicio.setVisible(false);
             frameGrafo.setVisible(true);
         }else if(e.getSource() == gValorado){
-            g = Grafo.criaGrafoValorado();
+            add_aresta_panel(1);
+            gValor = Grafo.criaGrafoValorado();
             frameInicio.setVisible(false);
             frameGrafo.setVisible(true);
         }else if(e.getSource() == addVertice){
             String vertInput = verticeInput.getText();
-            Grafo.addVertice(g, Integer.parseInt(vertInput));
-            Set<Integer> qVer = Grafo.quantidadeVertices(g);
-            quantidadeVertices.setText(qVer.toString());
+            if (vertInput.equals("")){
+                displayVertices.setText("Campo em branco inválido");
+            }else{
+                try{
+                    if(gValor != null && g == null){
+                        Grafo.addVerticeValorado(gValor, Integer.parseInt(vertInput));
+                    }else if(g != null && gValor == null)
+                        Grafo.addVertice(g, Integer.parseInt(vertInput));
+                    displayVertices.setText("Vertice "+vertInput+" adicionado!");
+                }catch(Exception ex){
+                    displayVertices.setText(ex.getMessage());
+                }
+            }
+
         }else if(e.getSource() == addAresta){
             String areInput1 = arestaInput1.getText();
             String areInput2 = arestaInput2.getText();
-            Grafo.addAresta(g, Integer.parseInt(areInput1), Integer.parseInt(areInput2));
-            Set<DefaultEdge> qAre = Grafo.quantidadeArestas(g);
-            quantidadeAresta.setText(qAre.toString());
-            Grafo.buscaLargura(g, Integer.parseInt(areInput1));
-            System.out.println();
-            //Grafo.buscaProfundidade(g, Integer.parseInt(areInput1));
+            String valor = arestaValorInput.getText();
+            if (areInput1.equals("") | areInput2.equals("")){
+                displayAresta.setText("Campo em branco inválido");
+            }else{
+                try{
+                    if(gValor != null && g == null){
+                        if(!valor.equals("")){
+                            Grafo.addArestaValorada(gValor, Integer.parseInt(areInput1), Integer.parseInt(areInput2), valor);
+                            displayAresta.setText("Aresta "+valor+ " adicionada!");
+                        }else{
+                            displayAresta.setText("Campo em branco inválido");
+                        }
+                    }else if(g != null && gValor == null){
+                        Grafo.addAresta(g, Integer.parseInt(areInput1), Integer.parseInt(areInput2));
+                        displayAresta.setText("Aresta "+areInput1+"->"+areInput2+" adicionada!");
+                    }
+                }catch(Exception ex){
+                    displayAresta.setText(ex.getMessage());
+                }
+            }
+
         }else if(e.getSource() == mostraGrafo){
             try {
-                Grafo.mostraGrafo(g);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
+                if(gValor != null && g == null){
+                    Grafo.mostraGrafoValorado(gValor);
+                }else if(g != null && gValor == null){
+                    Grafo.mostraGrafo(g);
+                }
+
+            } catch (Exception ex) {
+                displayMix.setText(ex.getMessage());
             }
             MyCanvas m=new MyCanvas();
             JFrame f=new JFrame();
             f.add(m);
             f.setSize(400,400);
             f.setVisible(true);
+        }else if(e.getSource() == bQuantidadeAresta){
+            if(gValor != null && g == null){
+                Set<String> qAre = Grafo.quantidadeArestasValorado(gValor);
+                displayMix.setText(qAre.toString());
+            }else if(g != null && gValor == null){
+                Set<DefaultEdge> qAre = Grafo.quantidadeArestas(g);
+                displayMix.setText(qAre.toString());
+            }
+
+
+        }else if(e.getSource() == bQuantidadeVertice){
+
+            if(gValor != null && g == null){
+                Set<Integer> qAre = Grafo.quantidadeVerticesValorado(gValor);
+                displayMix.setText(qAre.toString());
+
+            }else if(g != null && gValor == null){
+                Set<Integer> qAre = Grafo.quantidadeVertices(g);
+                displayMix.setText(qAre.toString());
+            }
+        }else if(e.getSource() == voltar){
+            g = null;
+            gValor = null;
+            frameInicio.setVisible(true);
+            frameGrafo.setVisible(false);
+            displayAresta.setText("");
+            displayVertices.setText("");
+            displayMix.setText("");
+            verticeInput.setText("");
+            arestaInput1.setText("");
+            arestaInput2.setText("");
+            arestaValorInput.setText("");
+            arestaValorInputRemove.setText("");
+            arestaInput1Remove.setText("");
+            arestaInput2Remove.setText("");
+            verticeInputRemove.setText("");
+
+        }else if(e.getSource() == removeAresta){
+            String valor = arestaValorInputRemove.getText();
+            String inpt1 = arestaInput1Remove.getText();
+            String inpt2 = arestaInput2Remove.getText();
+            try {
+                if (gValor != null && g == null) {
+                    Grafo.removerArestaValor(gValor, valor);
+                    displayAresta.setText("Aresta "+valor+" removida!");
+                } else if (g != null && gValor == null) {
+                    Grafo.removerAresta(g, Integer.parseInt(inpt1), Integer.parseInt(inpt2));
+                    displayAresta.setText("Aresta "+inpt1+"->"+inpt2+" removida!");
+                }
+            } catch (Exception ex) {
+                displayAresta.setText(ex.getMessage());
+            }
+
+        }else if(e.getSource() == removeVertice){
+            String vertInput = verticeInputRemove.getText();
+            if (vertInput.equals("")){
+                displayVertices.setText("Campo em branco inválido");
+            }else{
+                try{
+                    if(gValor != null && g == null){
+                        if(Grafo.quantidadeVerticesValorado(gValor).contains(Integer.parseInt(vertInput))){
+                            Grafo.removeVerticeValor(gValor, Integer.parseInt(vertInput));
+                            displayVertices.setText("Vertice "+vertInput+" removido!");
+                        }else{
+                            displayVertices.setText("Vertice "+vertInput+" não encontrado");
+                        }
+                    }else if(g != null && gValor == null)
+                        if(Grafo.quantidadeVertices(g).contains(Integer.parseInt(vertInput))){
+                            Grafo.removeVertice(g, Integer.parseInt(vertInput));
+                            displayVertices.setText("Vertice "+vertInput+" removido!");
+                        }else{
+                            displayVertices.setText("Vertice "+vertInput+" inexistente");
+                        }
+                }catch(Exception ex){
+                    displayVertices.setText(ex.getMessage());
+                }
+            }
+        }else if(e.getSource() == buscaLargura){
+            String inpt = buscaProfundidadeInput.getText();
+            ArrayList<Integer> array;
+            try{
+                if(gValor != null && g == null){
+                    array = Grafo.buscaLarguraValorado(gValor, Integer.parseInt(inpt));
+                    displayMix.setText(array.toString());
+
+                }else if(g != null && gValor == null){
+                    array = Grafo.buscaLargura(g, Integer.parseInt(inpt));
+                    displayMix.setText(array.toString());
+                }
+            }catch(Exception ex){
+                displayMix.setText(ex.getMessage());
+            }
+
+        }else if(e.getSource() == buscaProfundidade){
+            String inpt = buscaProfundidadeInput.getText();
+            ArrayList<Integer> array;
+            try{
+                if(gValor != null && g == null){
+                    array = Grafo.buscaProfundidadeValorado(gValor, Integer.parseInt(inpt));
+                    displayMix.setText(array.toString());
+
+                }else if(g != null && gValor == null){
+                    array = Grafo.buscaProfundidade(g, Integer.parseInt(inpt));
+                    displayMix.setText(array.toString());
+                }
+            }catch(Exception ex){
+            displayMix.setText(ex.getMessage());
+            }
         }
     }
 
